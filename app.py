@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from pathlib import Path
 
-# Sayfa konfigürasyonu
+# Sayfa ayarları
 st.set_page_config(
     page_title="CEN445 Veri Görselleştirme Projesi",
     page_icon="📊",
@@ -10,7 +10,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# CSS 
 st.markdown("""
     <style>
     .main-header {
@@ -33,7 +32,7 @@ st.markdown("""
         margin: 10px 0;
     }
     </style>
-""", unsafe_allow_html=True)
+""", unsafe_allow_html=True) 
 
 # Veri yükleme fonksiyonu
 @st.cache_data
@@ -50,10 +49,9 @@ def load_data():
 # Ana sayfa içeriği
 def show_home_page(data):
     """Ana sayfa - Proje ve veri seti hakkında genel bilgiler"""
-    st.markdown('<p class="main-header">📊 CEN445 Veri Görselleştirme Projesi</p>', unsafe_allow_html=True)
-    st.markdown('<p class="sub-header">Interaktif Keşifsel Veri Analizi Dashboard\'u</p>', unsafe_allow_html=True)
-    
-    # Proje bilgileri
+    st.markdown("# 📊 CEN445 Veri Görselleştirme Projesi")    
+
+
     col1, col2 = st.columns([2, 1])
     
     with col1:
@@ -123,65 +121,104 @@ def show_home_page(data):
             })
             st.dataframe(col_info, use_container_width=True)
 
-# Ana uygulama
 def main():
-    # Veriyi yükle
     data = load_data()
     
-    # Sidebar
-    with st.sidebar:
-        st.image("https://via.placeholder.com/150x150.png?text=Logo", width=150)
-        st.markdown("## 📌 Navigasyon")
-        st.markdown("Üst kısımdaki tab'lardan takım üyelerinin çalışmalarını inceleyebilirsiniz.")
+    
+    # ana sayfayı ilk başlamada göster
+    if 'current_page' not in st.session_state:
+        st.session_state.current_page = "🏠 Ana Sayfa"
+    
+    col_left, col_center, col_right = st.columns([12, 6, 8])
+    with col_center:
+        if st.button("🏠 Ana Sayfa", key="merkez_btn"):
+            st.session_state.centered_clicked = True
+            st.session_state.current_page = "🏠 Ana Sayfa"
+                
+    
+    st.markdown("---")
+    
+    PAGE_INFO = {
+        "👤 Üye 1": "Veri ön işleme ve Bölgesel Analizler.",
+        "👤 Üye 2": "Fiyat ve Yorum İlişkisi Görselleştirmeleri.",
+        "👤 Üye 3": "Zaman Serileri ve Gelişmiş Grafik Tipleri."
+    }
+    
+    PAGE_OPTIONS = list(PAGE_INFO.keys())
+    N_PAGES = len(PAGE_OPTIONS)
+
+    # Ortalamak için
+    padding_left, main_area, padding_right = st.columns([1, 4, 1]) # 4, 1, 4 daha çok boşluk bırakır
+
+    with main_area:
+        # Butonları yatayda hizalamak için yeni bir columns grubu oluşturun
+        cols_for_buttons = st.columns(N_PAGES)
         
-        if data is not None:
-            st.markdown("---")
-            st.markdown("## ⚙️ Genel Ayarlar")
-            st.checkbox("Koyu Tema", value=False, key="dark_theme")
-            st.slider("Grafik Yüksekliği", 300, 800, 500, key="chart_height")
-    
-    # Tab sistemi
-    tab1, tab2= st.tabs(["🏠 Ana Sayfa", "👤 Üye 1"])
-    
-    with tab1:
+        for i, page_name in enumerate(PAGE_OPTIONS):
+            
+            with cols_for_buttons[i]:
+                # --- Buton Oluşturma ---
+                if st.button(
+                    page_name, 
+                    key=f"tab_btn_{i}",
+                    use_container_width=True,
+                ):
+                    st.session_state.current_page = page_name
+                    
+                # --- Açıklama Ekleme ---
+                st.caption(PAGE_INFO[page_name])
+                
+                
+
+    st.markdown("---") 
+
+    active_page = st.session_state.current_page
+    if active_page != "🏠 Ana Sayfa":
+        with st.sidebar:
+            if active_page == "👤 Üye 1":
+                st.markdown("### Üye 1 Filtreleri")
+                st.info("Bölge filtreleri, Fiyat aralığı vb. buraya gelecek.")
+                # Örnek:
+                if data is not None:
+                    st.multiselect(
+                        "Bölge Seçin:",
+                        data['neighbourhood_group'].unique(),
+                        key="member1_regions"
+                    )
+
+            elif active_page == "👤 Üye 2":
+                st.markdown("### Üye 2 Filtreleri")
+                st.info("Kullanıcı Tipi, Yorum Sayısı filtreleri vb. buraya gelecek.")
+                
+            elif active_page == "👤 Üye 3":
+                st.markdown("### Üye 3 Filtreleri")
+                st.info("Kullanıcı Tipi, Yorum Sayısı filtreleri vb. buraya gelecek.")
+            
+
+    # Ana Sayfa 
+    if active_page == "🏠 Ana Sayfa":
         show_home_page(data)
     
-    with tab2:
+    elif active_page == "👤 Üye 1":
         st.markdown("# 👤 Üye 1 - Görselleştirmeler")
+        # Filtreleri session_state'den alıp görselleştirme fonksiyonuna iletme
+        # filter_values = st.session_state.get("member1_regions", [])
+        
         if data is not None:
-            try:
-                from member1.visualizations import show_visualizations
-                show_visualizations(data)
-            except ImportError:
-                st.warning("⚠️ Üye 1'in görselleştirme modülü henüz hazır değil.")
-                st.code("""
-                    # member1/visualizations.py dosyası oluşturulmalı
-                    # Örnek içerik için aşağıya bakın
-                """)
-        else:
-            st.error("Veri yüklenemedi!")
-    
-"""     with tab3:
+             # from member1.visualizations import show_visualizations
+             # show_visualizations(data, filter_values)
+             st.warning("Üye 1 görselleştirme çağrısı...")
+    elif active_page == "👤 Üye 2":
         st.markdown("# 👤 Üye 2 - Görselleştirmeler")
         if data is not None:
-            try:
-                from member2.visualizations import show_visualizations
-                show_visualizations(data)
-            except ImportError:
-                st.warning("⚠️ Üye 2'nin görselleştirme modülü henüz hazır değil.")
-        else:
-            st.error("Veri yüklenemedi!")
-    
-    with tab4:
+             st.warning("Üye 2 görselleştirme çağrısı...")
+             
+    elif active_page == "👤 Üye 3":
         st.markdown("# 👤 Üye 3 - Görselleştirmeler")
         if data is not None:
-            try:
-                from member3.visualizations import show_visualizations
-                show_visualizations(data)
-            except ImportError:
-                st.warning("⚠️ Üye 3'ün görselleştirme modülü henüz hazır değil.")
-        else:
-            st.error("Veri yüklenemedi!") """
+             st.warning("Üye 3 görselleştirme çağrısı...")
+        
+
 
 if __name__ == "__main__":
     main()
