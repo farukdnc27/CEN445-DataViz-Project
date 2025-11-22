@@ -77,7 +77,7 @@ This dataset provides a rich foundation for both categorical and numerical visua
 
 ### **1. Clone the repository**
 ```
-git clone https://github.com/username/airbnb-visualization.git
+git clone https://github.com/Mehmetdora/CEN445-DataViz-Project.git
 cd airbnb-visualization
 ```
 ### 2. Install dependencies
