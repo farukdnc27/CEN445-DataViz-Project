@@ -8,7 +8,7 @@ This project presents an interactive data visualization dashboard built using **
 The dashboard explores the *New York City Airbnb Open Data* dataset by examining price distribution, geographical patterns, room-type trends, host activity, and multi-dimensional relationships between listing attributes.
 
 The goal is to transform raw Airbnb data into clear, meaningful visual insights through advanced visualization techniques.
-
+**Live Demo:** https://cen445-dataviz-project-fdi.streamlit.app/
 
 
 ## 📊 Dataset Information  
