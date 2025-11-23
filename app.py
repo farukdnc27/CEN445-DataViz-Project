@@ -208,35 +208,6 @@ def main():
 
         # Mehmet Dora 
         elif st.session_state.current_page == "Mehmet": 
-            st.sidebar.header("Data Filters")
-            all_groups = df['neighbourhood_group'].unique()
-            selected_groups = st.sidebar.multiselect(
-                "Neighborhood Groups", 
-                all_groups, 
-                default=all_groups,
-                help="Filter data by NYC boroughs"
-            )
-            
-            # Filtreleme
-            df_filtered = df[df['neighbourhood_group'].isin(selected_groups)]
-            
-            # İstatistik Badge
-            st.sidebar.markdown(f"""
-                <div style='background: rgba(16, 185, 129, 0.1); 
-                            border: 1px solid rgba(16, 185, 129, 0.3);
-                            border-radius: 10px; 
-                            padding: 1rem; 
-                            margin-top: 1rem;
-                            text-align: center;'>
-                    <div style='font-size: 1.5rem; font-weight: 700; color: #10b981;'>
-                        {len(df_filtered):,}
-                    </div>
-                    <div style='font-size: 0.8rem; color: #6ee7b7;'>
-                        LISTINGS SELECTED
-                    </div>
-                </div>
-            """, unsafe_allow_html=True)
-            
             student_mehmet.run_mehmet_module(df)
 
         # --- Student 3 SAYFASI ---
