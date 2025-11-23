@@ -1,7 +1,7 @@
 import streamlit as st
 from data_loader import load_dataset
 import student_omer
-# import student_dora 
+import student_mehmet
 import student_ahmet
 
 # 1. Sayfa Ayarları
@@ -72,11 +72,11 @@ def main():
             st.markdown("""
                 <div class='student-card'>
                     <span class='icon-large'>👨‍🎓</span>
-                    <p class='student-name'>Student 2</p>
+                    <p class='student-name'>Mehmet Dora<br>2021555019</p>
                 </div>
             """, unsafe_allow_html=True)
             if st.button("📊 View Analysis", key="student2"):
-                set_page("Student2")
+                set_page("Mehmet")
                 st.rerun()
 
         with col3:
@@ -140,6 +140,7 @@ def main():
     else:
         # Sidebar Navigation
         with st.sidebar:
+            
             st.markdown("<h2 style='text-align: center;'>🧭 Navigation</h2>", unsafe_allow_html=True)
             st.write("")
             if st.button("🏠 Back to Home", use_container_width=True):
@@ -147,19 +148,22 @@ def main():
                 st.rerun()
             
             st.divider()
-            st.markdown("""
-                <div style='background: rgba(255, 255, 255, 0.05); 
-                            padding: 1rem; 
-                            border-radius: 10px; 
-                            margin-top: 2rem;
-                            text-align: center;'>
-                    <p style='font-size: 0.9rem; color: #a5b4fc;'>
-                        <strong>CEN445 Project</strong><br>
-                        Data Visualization<br>
-                        2025-2026
-                    </p>
-                </div>
-            """, unsafe_allow_html=True)
+            
+            # Mehmet Dora sayfası için gösterilmiyor bu kısım
+            if st.session_state.current_page != "Mehmet":
+                st.markdown("""
+                    <div style='background: rgba(255, 255, 255, 0.05); 
+                                padding: 1rem; 
+                                border-radius: 10px; 
+                                margin-top: 2rem;
+                                text-align: center;'>
+                        <p style='font-size: 0.9rem; color: #a5b4fc;'>
+                            <strong>CEN445 Project</strong><br>
+                            Data Visualization<br>
+                            2025-2026
+                        </p>
+                    </div>
+                """, unsafe_allow_html=True)
         
         # Veriyi Yükle
         df = load_dataset()
@@ -200,11 +204,40 @@ def main():
             # Modülü Çalıştır
             student_omer.run_omer_module(df_filtered)
 
-        # --- Student 2 SAYFASI ---
-        elif st.session_state.current_page == "Student2":
-            st.markdown("<h1>👨‍🎓 Student 2 Analysis</h1>", unsafe_allow_html=True)
-            st.warning("⚠️ This module is under construction.")
-            # student_ali.run_module(df)
+
+
+        # Mehmet Dora 
+        elif st.session_state.current_page == "Mehmet": 
+            st.sidebar.header("Data Filters")
+            all_groups = df['neighbourhood_group'].unique()
+            selected_groups = st.sidebar.multiselect(
+                "Neighborhood Groups", 
+                all_groups, 
+                default=all_groups,
+                help="Filter data by NYC boroughs"
+            )
+            
+            # Filtreleme
+            df_filtered = df[df['neighbourhood_group'].isin(selected_groups)]
+            
+            # İstatistik Badge
+            st.sidebar.markdown(f"""
+                <div style='background: rgba(16, 185, 129, 0.1); 
+                            border: 1px solid rgba(16, 185, 129, 0.3);
+                            border-radius: 10px; 
+                            padding: 1rem; 
+                            margin-top: 1rem;
+                            text-align: center;'>
+                    <div style='font-size: 1.5rem; font-weight: 700; color: #10b981;'>
+                        {len(df_filtered):,}
+                    </div>
+                    <div style='font-size: 0.8rem; color: #6ee7b7;'>
+                        LISTINGS SELECTED
+                    </div>
+                </div>
+            """, unsafe_allow_html=True)
+            
+            student_mehmet.run_mehmet_module(df)
 
         # --- Student 3 SAYFASI ---
         elif st.session_state.current_page == "Student3":
