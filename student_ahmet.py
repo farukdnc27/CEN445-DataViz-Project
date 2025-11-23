@@ -17,18 +17,37 @@ def run_ahmet_module(data):
     # Veri kopyalama
     df = data.copy()
 
-    # --- SIDEBAR ---
     with st.sidebar:
         st.markdown("Filters")
+
         selected_groups = st.multiselect(
-            "Choose borough",
+            "Choose Borough ",
             options=df['neighbourhood_group'].unique(),
             default=df['neighbourhood_group'].unique(),
             key="u3_region_select"
         )
 
-    # Filtreleme
-    filtered_df = df[df['neighbourhood_group'].isin(selected_groups)]
+        selected_room_types = st.multiselect(
+            "Choose Room Types",
+            options=df['room_type'].unique(),
+            default=df['room_type'].unique(),
+            key="u3_room_type_select"
+        )
+
+        price_range = st.slider(
+            "Price Range ($)",
+            int(df['price'].min()),
+            int(df['price'].max()),
+            (int(df['price'].min()), int(df['price'].max())),
+            key="u3_price_slider"
+        )
+
+    filtered_df = df[
+        (df['neighbourhood_group'].isin(selected_groups)) &
+        (df['room_type'].isin(selected_room_types)) &
+        (df['price'] >= price_range[0]) &
+        (df['price'] <= price_range[1])
+        ]
 
     if filtered_df.empty:
         st.warning("Veri yok.")
