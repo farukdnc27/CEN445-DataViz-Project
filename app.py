@@ -2,7 +2,7 @@ import streamlit as st
 from data_loader import load_dataset
 import student_omer
 # import student_dora 
-# import student_ahmet
+import student_ahmet
 
 # 1. Sayfa Ayarları
 st.set_page_config(
@@ -83,7 +83,7 @@ def main():
             st.markdown("""
                 <div class='student-card'>
                     <span class='icon-large'>👨‍🎓</span>
-                    <p class='student-name'>Student 3</p>
+                    <p class='student-name'>Ahmet Muhtar Bilal<br>2022556011</p>
                 </div>
             """, unsafe_allow_html=True)
             if st.button("📊 View Analysis", key="student3"):
@@ -208,9 +208,8 @@ def main():
 
         # --- Student 3 SAYFASI ---
         elif st.session_state.current_page == "Student3":
-            st.markdown("<h1>👨‍🎓 Student 3 Analysis</h1>", unsafe_allow_html=True)
-            st.warning("⚠️ This module is under construction.")
-            # student_ayse.run_module(df)
+            student_ahmet.run_ahmet_module(df)
+
 
 if __name__ == "__main__":
     main()
