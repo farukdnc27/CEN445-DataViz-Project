@@ -93,6 +93,8 @@ streamlit run app.py
 Team Member - Contributions
 
 - Mehmet Dora - Parallel Coordinates , Sankey , Scatter
+    created github repository ,created and filled in the requirements and readme file
 - Ömer Faruk Dinçoğlu - Histogram , Treemap, Heatmap
+    designed the home page ,created and filled in the app.py file
 - Ahmet Muhtar Bilal - Hexagonal Chart, Violin Plot, Line Bar Chart
 
