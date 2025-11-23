@@ -46,7 +46,7 @@ This dataset provides a rich foundation for both categorical and numerical visua
 - **Treemap**  
 - **Paralell Coordinates**  
 - **Sankey**  
-- **Stacked Bar**  
+- **Heatmap**  
 - **Hexagonal Chart**  
 - **Violin Plot**  
   
@@ -93,6 +93,6 @@ streamlit run app.py
 Team Member - Contributions
 
 - Mehmet Dora - Parallel Coordinates , Sankey , Scatter
-- Ömer Faruk Dinçoğlu - Histogram , Treemap, Stacked Bar
+- Ömer Faruk Dinçoğlu - Histogram , Treemap, Heatmap
 - Ahmet Muhtar Bilal - Hexagonal Chart, Violin Plot, Line Bar Chart
 
