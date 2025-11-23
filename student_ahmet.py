@@ -19,9 +19,9 @@ def run_ahmet_module(data):
 
     # --- SIDEBAR ---
     with st.sidebar:
-        st.markdown("### 🛠️ Filtreler")
+        st.markdown("Filters")
         selected_groups = st.multiselect(
-            "Bölge Seçin",
+            "Choose borough",
             options=df['neighbourhood_group'].unique(),
             default=df['neighbourhood_group'].unique(),
             key="u3_region_select"
